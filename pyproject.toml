@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jiapivialiu-kaggle-hub"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Jiaping(Olivia) Liu", email = "jiaping.liu@stat.ubc.ca" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Jiaping(Olivia) Liu/hatch#readme"
+Issues = "https://github.com/Jiaping(Olivia) Liu/hatch/issues"
+Source = "https://github.com/Jiaping(Olivia) Liu/hatch"
+
+[tool.hatch.version]
+path = "src/hatch/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/hatch tests}"
+
+[tool.coverage.run]
+source_pkgs = ["hatch", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/hatch/__about__.py",
+]
+
+[tool.coverage.paths]
+hatch = ["src/hatch", "*/hatch/src/hatch"]
+tests = ["tests", "*/hatch/tests"]
+
+[tool.coverage.report]
+exclude_lines = [h
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "kaggle>=1.5.15",
+    "pandas>=1.5.0",
+    "numpy>=1.24.0"
+]
+
+[tool.hatch.envs.default.env-vars]
+KAGGLE_CONFIG_DIR = ".kaggle"
+
+[tool.hatch.envs.default.scripts]
+download_data = "kaggle datasets download -d {dataset-path} -p {output-path}"
+submit_solution = "kaggle competitions submit -c {competition-name} -f {file-path} -m {message}"
